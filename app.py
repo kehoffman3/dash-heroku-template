@@ -73,6 +73,7 @@ fig4 = px.box(data,x='income', y='sex', color='sex',
               category_orders={'job_prestige_binned':['Very Low', 'Low', 'Medium-Low', 'Medium-High', 'High', 'Very High']}, facet_col_wrap=2)
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 app.layout = html.Div(    
     [        
         html.H1("Understanding the Gender Wage Gap"),
