@@ -5,7 +5,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import dash
-from jupyter_dash import JupyterDash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
@@ -73,7 +72,7 @@ fig4 = px.box(data,x='income', y='sex', color='sex',
               facet_col='job_prestige_binned', 
               category_orders={'job_prestige_binned':['Very Low', 'Low', 'Medium-Low', 'Medium-High', 'High', 'Very High']}, facet_col_wrap=2)
 
-app = JupyterDash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.layout = html.Div(    
     [        
         html.H1("Understanding the Gender Wage Gap"),
