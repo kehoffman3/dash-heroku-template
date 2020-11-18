@@ -77,6 +77,7 @@ server = app.server
 app.layout = html.Div(    
     [        
         html.H1("Understanding the Gender Wage Gap"),
+        html.H5("By: Kevin Hoffman"),
         dcc.Markdown(children = markdown_text),
         html.H2("Mean Statistics by Sex"),
         dcc.Graph(figure=table_means),
