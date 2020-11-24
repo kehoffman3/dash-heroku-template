@@ -81,8 +81,30 @@ app.layout = html.Div(
         dcc.Markdown(children = markdown_text),
         html.H2("Mean Statistics by Sex"),
         dcc.Graph(figure=table_means),
-        html.H2("Responses to Male Breadwinner Question by Sex"),
-        dcc.Graph(figure=fig_bars),
+
+        html.H2("Grouped Statistics"),
+        html.Div([
+            
+            html.H3("question"),
+            
+            dcc.Dropdown(id='x-axis',
+            options=[{'label':l, 'value': v} for l,v in [('Male Breadwinner?','male_breadwinner'), ('Job Satisfaction', 'satjob'), ('Mother-Child Working', 'relationship'), ('Men Politics','men_bettersuited'), ('Child Suffer Mother Works', 'child_suffer'), ('Men Overwork','men_overwork')]],
+            value='male_breadwinner'),
+            
+            html.H3("group"),
+            
+            dcc.Dropdown(id='group',
+            options=[{'label': l, 'value': v} for l,v in [('Sex','sex'), ('Region','region'), ('Education','education')]],
+            value="sex")
+        
+        ], style={'display': 'inline-block', 'width': '25%', 'vertical-align': 'middle'}),
+        
+        html.Div([
+            dcc.Graph(id="graph")
+        
+        ], style={'display': 'inline-block', 'width': '75%', 'vertical-align': 'middle'}),
+
+        
         html.H2("Income and Occupational Prestige by Sex"),
         dcc.Graph(figure=income_prestige_fig),
         html.Div([
@@ -102,6 +124,15 @@ app.layout = html.Div(
         dcc.Graph(figure=fig4)
     ]
     )
+
+@app.callback(Output(component_id="graph",component_property="figure"), 
+                  [Input(component_id='x-axis',component_property="value"),
+                   Input(component_id='group',component_property="value")])
+
+def make_figure(x, group):
+    data = gss_clean.groupby([x, group]).size().reset_index().rename({0:'Count'}, axis=1)
+    return px.bar(data, x=x, y="Count", color=group, barmode='group')
+  
 if __name__ == '__main__':
 
     #app.run_server(debug=True, mode='inline', port=9004, host='127.0.0.1')
